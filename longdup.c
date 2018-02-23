@@ -11,10 +11,10 @@ int pstrcmp(char **p, char **q)
 {   return strcmp(*p, *q); }
 
 int comlen(char *p, char *q)
-{	int i = 0;
-	while (*p && (*p++ == *q++))
-		i++;
-	return i;
+{    int i = 0;
+    while (*p && (*p++ == *q++))
+        i++;
+    return i;
 }
 
 #define M 1

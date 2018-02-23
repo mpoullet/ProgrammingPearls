@@ -4,7 +4,7 @@
 /* maxsum.c -- time algs for maximum-sum subsequence
  * Input:  algnum, n
  * Output: algnum, n, answer, ticks, secs
- *		See main for algnum codes
+ *        See main for algnum codes
  */
 
 #include <stdio.h>
@@ -87,26 +87,26 @@ float recmax(int l, int u)
 {   int i, m;
     float lmax, rmax, sum;
     if (l > u)  /* zero elements */
-		return 0;
+        return 0;
     if (l == u)  /* one element */
-		return max(0, x[l]);
+        return max(0, x[l]);
     m = (l+u) / 2;
-	/* find max crossing to left */
+    /* find max crossing to left */
     lmax = sum = 0;
     for (i = m; i >= l; i--) {
-		sum += x[i];
-		if (sum > lmax)
-			lmax = sum;
+        sum += x[i];
+        if (sum > lmax)
+            lmax = sum;
     }
-	/* find max crossing to right */
+    /* find max crossing to right */
     rmax = sum = 0;
     for (i = m+1; i <= u; i++) {
-		sum += x[i];
-		if (sum > rmax)
-			rmax = sum;
+        sum += x[i];
+        if (sum > rmax)
+            rmax = sum;
     }
     return max(lmax + rmax,
-		max(recmax(l, m), recmax(m+1, u)));
+        max(recmax(l, m), recmax(m+1, u)));
 }
 
 float alg3()
@@ -132,7 +132,7 @@ float alg4b()
     for (i = 0; i < n; i++) {
         maxendinghere += x[i];
         maxendinghere = maxmac(maxendinghere, 0);
-       	maxsofar = maxmac(maxsofar, maxendinghere);
+           maxsofar = maxmac(maxsofar, maxendinghere);
     }
     return maxsofar;
 }
@@ -143,7 +143,7 @@ float alg4c()
     for (i = 0; i < n; i++) {
         maxendinghere += x[i];
         maxendinghere = maxfun(maxendinghere, 0);
-       	maxsofar = maxfun(maxsofar, maxendinghere);
+           maxsofar = maxfun(maxsofar, maxendinghere);
     }
     return maxsofar;
 }
@@ -157,15 +157,15 @@ int main()
         start = clock();
         thisans = -1;
         switch (algnum) {
-			case 1:  thisans = alg1();  break;
-			case 2:  thisans = alg2();  break;
-			case 22: thisans = alg2b(); break;
-			case 3:  thisans = alg3();  break;
-			case 4:  thisans = alg4();  break;
-			case 42: thisans = alg4b(); break;
-			case 43: thisans = alg4c(); break;
-			default: break;
-		}
+            case 1:  thisans = alg1();  break;
+            case 2:  thisans = alg2();  break;
+            case 22: thisans = alg2b(); break;
+            case 3:  thisans = alg3();  break;
+            case 4:  thisans = alg4();  break;
+            case 42: thisans = alg4b(); break;
+            case 43: thisans = alg4c(); break;
+            default: break;
+        }
         clicks = clock()-start;
         printf("%d\t%d\t%f\t%d\t%f\n", algnum, n, thisans,
             clicks, clicks / (float) CLOCKS_PER_SEC);
