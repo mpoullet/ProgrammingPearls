@@ -24,67 +24,57 @@ int next[MAXWORDS];
 int bin[NHASH];
 #define MULT 31
 
-unsigned int hash(char *ptr)
-{    unsigned int h = 0;
-    unsigned char *p = ptr;
-    int n;
-    for (n = k; n > 0; p++) {
-        h = MULT * h + *p;
-        if (*p == 0)
-            n--;
-    }
-    return h % NHASH;
+unsigned int hash(char *ptr) {
+  unsigned int h = 0;
+  unsigned char *p = ptr;
+  int n;
+  for (n = k; n > 0; p++) {
+    h = MULT * h + *p;
+    if (*p == 0) n--;
+  }
+  return h % NHASH;
 }
 
-int wordncmp(char *p, char* q)
-{    int n = k;
-    for ( ; *p == *q; p++, q++)
-        if (*p == 0 && --n == 0)
-            return 0;
-    return *p - *q;
+int wordncmp(char *p, char *q) {
+  int n = k;
+  for (; *p == *q; p++, q++)
+    if (*p == 0 && --n == 0) return 0;
+  return *p - *q;
 }
 
-int sortcmp(char **p, char **q)
-{    return wordncmp(*p, *q);
+int sortcmp(char **p, char **q) { return wordncmp(*p, *q); }
+
+char *skip(char *p, int n) {
+  for (; n > 0; p++)
+    if (*p == 0) n--;
+  return p;
 }
 
-char *skip(char *p, int n)
-{    for ( ; n > 0; p++)
-        if (*p == 0)
-            n--;
-    return p;
-}
-
-int main()
-{    int i, wordsleft = 10000, j;
-    char *phrase, *p;
-    word[0] = inputchars;
-    while (scanf("%s", word[nword]) != EOF) {
-        word[nword+1] = word[nword] + strlen(word[nword]) + 1;
-        nword++;
-    }
-    for (i = 0; i < k; i++)
-        word[nword][i] = 0;
-    for (i = 0; i < NHASH; i++)
-        bin[i] = -1;
-    for (i = 0; i <= nword - k; i++) { /* check */
-        j = hash(word[i]);
-        next[i] = bin[j];
-        bin[j] = i;
-    }
-    for (i = 0; i < k; i++)
-        printf("%s\n", word[i]);
-    phrase = inputchars;
-    for ( ; wordsleft > 0; wordsleft--) {
-        i = 0;
-        for (j = bin[hash(phrase)]; j >= 0; j = next[j])
-            if ((wordncmp(phrase, word[j]) == 0)
-                && (rand() % (++i) == 0))
-                p = word[j];
-        phrase = skip(p, 1);
-        if (strlen(skip(phrase, k-1)) == 0)
-            break;
-        printf("%s\n", skip(phrase, k-1));
-    }
-    return 0;
+int main() {
+  int i, wordsleft = 10000, j;
+  char *phrase, *p;
+  word[0] = inputchars;
+  while (scanf("%s", word[nword]) != EOF) {
+    word[nword + 1] = word[nword] + strlen(word[nword]) + 1;
+    nword++;
+  }
+  for (i = 0; i < k; i++) word[nword][i] = 0;
+  for (i = 0; i < NHASH; i++) bin[i] = -1;
+  for (i = 0; i <= nword - k; i++) { /* check */
+    j = hash(word[i]);
+    next[i] = bin[j];
+    bin[j] = i;
+  }
+  for (i = 0; i < k; i++) printf("%s\n", word[i]);
+  phrase = inputchars;
+  for (; wordsleft > 0; wordsleft--) {
+    i = 0;
+    for (j = bin[hash(phrase)]; j >= 0; j = next[j])
+      if ((wordncmp(phrase, word[j]) == 0) && (rand() % (++i) == 0))
+        p = word[j];
+    phrase = skip(p, 1);
+    if (strlen(skip(phrase, k - 1)) == 0) break;
+    printf("%s\n", skip(phrase, k - 1));
+  }
+  return 0;
 }
